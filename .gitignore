@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# UV Virtual Environment
+.venv/
+
+# IDE files (PyCharm)
+.idea/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
