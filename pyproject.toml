@@ -4,6 +4,6 @@ version = "0.1.0"
 description = "My personal solutions to Project Euler problems."
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
-[project.optional-dependencies]
-dev = ["pytest"]
+dependencies = [
+    "pytest>=8.4.2",
+]
