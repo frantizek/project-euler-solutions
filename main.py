@@ -71,7 +71,7 @@ TEST_TEMPLATE = """
 Tests for Project Euler Problem {problem_number}.
 \"\"\"
 import pytest
-from .solution import solve
+from solution import solve
 
 def test_problem_solution():
     \"\"\"
