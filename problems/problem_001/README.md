@@ -26,7 +26,7 @@ Find the sum of all the multiples of 3 or 5 below 1000.
 
 ## Running the Code
 
-```
+```commandline
 python solution_001.py # solves for default limit (1000)
 pytest test_solution_001.py # runs all tests
 ```
