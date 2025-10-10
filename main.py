@@ -25,9 +25,8 @@ PROBLEM_DATA = {
     20: "Factorial digit sum",
 }
 
-# --- File Templates ---
+BASE_DIR = Path("problems")
 
-# Using .format() to avoid conflicts with f-string's curly braces
 README_TEMPLATE = """
 # Problem {problem_number}: {problem_title}
 
@@ -63,7 +62,6 @@ def solve():
 if __name__ == "__main__":
     solution = solve()
     print(f"The solution for problem {problem_number} is: {{solution}}")
-
 """.strip()
 
 TEST_TEMPLATE = """
@@ -71,14 +69,12 @@ TEST_TEMPLATE = """
 Tests for Project Euler Problem {problem_number}.
 \"\"\"
 import pytest
-from solution import solve
+from solution_{formatted_number} import solve
 
 def test_problem_solution():
     \"\"\"
     Tests that the solution returns the correct answer.
     \"\"\"
-    # Once you know the correct answer, put it here.
-    # This ensures that future code changes don't break the solution.
     expected_answer = 0 # TODO: Replace with the actual correct answer
     assert solve() == expected_answer
 """.strip()
@@ -88,13 +84,11 @@ def create_problem_structure(problem_number: int):
     """
     Generates the directory and template files for a given problem number.
     """
-    # Format number with leading zeros (e.g., 1 -> 001, 12 -> 012)
     formatted_number = f"{problem_number:03d}"
-    problem_title = PROBLEM_DATA.get(problem_number, "Unknown Title")
+    problem_title = PROBLEM_DATA.get(problem_number, f"Problem {problem_number}")
 
     # Define paths
-    base_dir = Path("problems")
-    problem_dir = base_dir / f"problem_{formatted_number}"
+    problem_dir = BASE_DIR / f"problem_{formatted_number}"
 
     # Check if directory already exists
     if problem_dir.exists():
@@ -105,11 +99,11 @@ def create_problem_structure(problem_number: int):
     print(f"Creating directory: '{problem_dir}'...")
     problem_dir.mkdir(parents=True, exist_ok=True)
 
-    # Create files
+    # Create files with numbered filenames
     files_to_create = {
         "README.md": README_TEMPLATE.format(problem_number=problem_number, problem_title=problem_title),
-        "solution.py": SOLUTION_TEMPLATE.format(problem_number=problem_number, problem_title=problem_title),
-        "test_solution.py": TEST_TEMPLATE.format(problem_number=problem_number),
+        f"solution_{formatted_number}.py": SOLUTION_TEMPLATE.format(problem_number=problem_number, problem_title=problem_title),
+        f"test_solution_{formatted_number}.py": TEST_TEMPLATE.format(problem_number=problem_number, formatted_number=formatted_number),
     }
 
     for filename, content in files_to_create.items():
@@ -117,7 +111,7 @@ def create_problem_structure(problem_number: int):
         file_path.write_text(content)
         print(f"   -> Created file: '{file_path}'")
 
-    print(f"\n✅ Successfully created structure for Problem {problem_number}: {problem_title}")
+    print(f"\n✅ Successfully created structure for Problem {problem_number}: {problem_title}\n")
 
 
 def main():
@@ -125,20 +119,21 @@ def main():
     print("--- Project Euler Structure Generator ---")
     while True:
         try:
-            user_input = input("Enter problem number (e.g., '1', '15') or 'q' to quit: ")
+            user_input = input("Enter problem number (e.g., '1', '15') or 'q' to quit: ").strip()
             if user_input.lower() == 'q':
                 print("Exiting.")
                 break
 
-            problem_num = int(user_input)
-            if problem_num <= 0:
+            if not user_input.isdigit() or int(user_input) <= 0:
                 print("❌ Please enter a positive number.")
                 continue
 
+            problem_num = int(user_input)
             create_problem_structure(problem_num)
 
-        except ValueError:
-            print("❌ Invalid input. Please enter a number.")
+        except KeyboardInterrupt:
+            print("\nUser interrupted. Exiting.")
+            break
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
             break

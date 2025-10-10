@@ -2,7 +2,7 @@
 Tests for Project Euler Problem 2.
 """
 import pytest
-from solution import solve
+from problems.problem_002.solution_002 import solve
 
 def test_problem_solution():
     """
