@@ -7,7 +7,7 @@ Each problem is solved in Python and contained within its own directory under `/
 ## Structure
 
 Each problem directory (`/problems/problem_XXX`) includes:
-- `solution.py`: The Python script that calculates the answer.
+- `solution_XXX.py`: The Python script that calculates the answer.
 - `README.md`: The original problem statement and my notes on the approach.
 
 ## Setup
